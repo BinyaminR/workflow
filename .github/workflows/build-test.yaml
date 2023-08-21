@@ -1,4 +1,5 @@
 name: Conditional Workflow for New Files
+
 on:
   push:
     paths:
@@ -12,41 +13,43 @@ jobs:
         version: ['3.8', '3.9']
 
     runs-on: ${{ matrix.os }}
+
     env:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v2
+      - name: Checkout Code
+        uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.version }}
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.version }}
 
-    - name: Install Dependencies
-      run: |
-        pip install flask
-      working-directory: . 
+      - name: Install Dependencies
+        run: |
+          pip install flask
+        working-directory: .
 
-    - name: Run Application
-      run: |
-        python app.py &
-      working-directory: .
+      - name: Run Application
+        run: |
+          python app.py &
+        working-directory: .
 
-    - name: Wait for Application
-      run: |
-        sleep 5 
-      working-directory: .  
+      - name: Wait for Application
+        run: |
+          sleep 5
+        working-directory: .
 
-    - name: Run Tests
-      run: |
-        python -m unittest test_app.py
-      working-directory: . 
-    - name: Slack Notification
-      uses: act10ns/slack@v1
-      with: 
-        status: ${{ job.status }}
-        steps: ${{ toJson(steps) }}
-        channel: '#test' 
-       if: always()  
+      - name: Run Tests
+        run: |
+          python -m unittest test_app.py
+        working-directory: .
+
+      - name: Slack Notification
+        uses: act10ns/slack@v1
+        with:
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+          channel: '#test'
+        if: always()
