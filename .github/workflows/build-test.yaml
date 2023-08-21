@@ -43,11 +43,11 @@ jobs:
       run: |
         python -m unittest test_app.py
       working-directory: . 
-    
+
     - name: Slack Notification
       uses: actions/slack@v1
       with: 
         status: ${{ job.status }}
-        channel: '#meetups'
+        channel: '#test'
         message: Deployed {{ env.GITHUB_REF_NAME }} Unsuccessfully
        if: failure()  
