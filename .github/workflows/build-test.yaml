@@ -1,0 +1,39 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - main # Change to your main branch name
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x # Specify your Python version
+
+    - name: Install Dependencies
+      run: |
+        pip install flask
+      working-directory: ./workflow # Adjust to your app's directory
+
+    - name: Run Application
+      run: |
+        python app.py &
+      working-directory: ./workflow # Adjust to your app's directory
+
+    - name: Wait for Application
+      run: |
+        sleep 5 # Adjust this time as needed to allow your app to start
+      working-directory: ./workflow # Adjust to your app's directory
+
+    - name: Run Tests
+      run: |
+        python -m unittest test_app.py
+      working-directory: ./workflow # Adjust to your app's directory
