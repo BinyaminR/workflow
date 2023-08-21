@@ -1,4 +1,8 @@
-name: Build and Test
+name: Conditional Workflow for New Files
+on:
+  push:
+    paths:
+      - app.py
 
 jobs:
   build:
