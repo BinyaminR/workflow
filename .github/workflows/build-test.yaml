@@ -45,7 +45,7 @@ jobs:
       working-directory: . 
     
     - name: Slack Notification
-      uses: act10ns/slack@v1
+      uses: actions/slack@v1
       with: 
         status: ${{ job.status }}
         channel: '#meetups'
