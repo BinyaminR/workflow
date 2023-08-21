@@ -1,0 +1,28 @@
+name: Conditional Workflow for New Files
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for New Files
+        id: check_new_files
+        run: |
+          # Get the list of added files in the push event
+          added_files=$(git diff --name-status ${{ github.event.before }} ${{ github.event.after }} | grep '^A' | awk '{print $2}')
+          
+          # Check if there are added files
+          if [ -n "$added_files" ]; then
+            echo "New files added: $added_files"
+            echo "::set-output name=new_files::true"
+          else
+            echo "No new files added."
+            echo "::set-output name=new_files::false"
+          fi
+          
+      - name: Run on New Files
+        if: ${{ steps.check_new_files.outputs.new_files == 'true' }}
+        run: echo "new file!"
