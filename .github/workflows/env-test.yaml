@@ -15,7 +15,7 @@ jobs:
 
     - name: Test Environment Variable
       run: |
-        echo "My variable value is: ${{ env.MY_SECRET_KEY }}"
+        echo "My variable value is: ${{ vars.MY_SECRET_KEY }}"
 
         
         
