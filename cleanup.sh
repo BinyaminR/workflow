@@ -15,4 +15,5 @@ for file in "$directory"/*; do
     if (( file_mtime < threshold_date )); then
         rm "$file"
     fi
+
 done
