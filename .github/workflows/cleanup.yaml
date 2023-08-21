@@ -2,7 +2,7 @@ name: Scheduled Cleanup
 
 on:
   schedule:
-    - cron: '1 * * * *' # Run every minute
+    - cron: '3 * * * *' # Run every minute
 
 jobs:
   cleanup:
