@@ -6,7 +6,12 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, ubuntu-20.04]
+        version: ['3.8', '3.9']
+
+    runs-on: ${{ matrix.os }}
 
     steps:
     - name: Checkout Code
@@ -15,25 +20,25 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.x # Specify your Python version
+        python-version: ${{ matrix.version }}
 
     - name: Install Dependencies
       run: |
         pip install flask
-      working-directory: . # Adjust to your app's directory
+      working-directory: . 
 
     - name: Run Application
       run: |
         python app.py &
-      working-directory: . # Adjust to your app's directory
+      working-directory: .
 
     - name: Wait for Application
       run: |
-        sleep 5 # Adjust this time as needed to allow your app to start
-      working-directory: .  # Adjust to your app's directory
+        sleep 5 
+      working-directory: .  
 
     - name: Run Tests
       run: |
         python -m unittest test_app.py
-      working-directory: .  # Adjust to your app's directory
+      working-directory: . 
    
