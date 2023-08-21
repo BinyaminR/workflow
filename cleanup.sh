@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the directory to clean up
-directory="/path/to/your/directory"
+directory="."
 
 # Define the maximum age (in days) for files to be deleted
 max_age_days=30
