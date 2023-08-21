@@ -1,0 +1,19 @@
+name: Scheduled Cleanup
+
+on:
+  schedule:
+    - cron: '* * * * *' # Run every minute
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: Run Cleanup Script
+      run: |
+        chmod +x cleanup.sh
+        ./cleanup.sh
+      working-directory: . # Adjust to your app's directory
