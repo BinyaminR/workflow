@@ -4,41 +4,38 @@ on:
   push:
     paths:
       - app.py
+      - Dockerfile
 
 jobs:
   build:
-    strategy:
-      matrix:
-        os: [ubuntu-22.04, ubuntu-20.04]
-        version: ['3.8', '3.9']
-
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     env:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v2
-
+      
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      
+      - name: Build and start containers
+        run: |
+          docker-compose up -d --build
+        working-directory: .
+      
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.version }}
+          python-version: 3.x
 
       - name: Install Dependencies
         run: |
           pip install flask
-        working-directory: .
-
-      - name: Run Application
-        run: |
-          python app.py &
-        working-directory: .
-
-      - name: Wait for Application
-        run: |
-          sleep 5
         working-directory: .
 
       - name: Run Tests
@@ -52,4 +49,4 @@ jobs:
           status: ${{ job.status }}
           steps: ${{ toJson(steps) }}
           channel: '#test'
-        if: always()
+        if: falure()
