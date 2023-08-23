@@ -25,7 +25,7 @@ jobs:
     steps:
       - name: Test
         run: |
-          curl -X POST "https://api.github.com/repos/${{ github.event.repository.owner.login }}/${{ github.event.repository.name }}/dispatches" \
+          curl -X POST "https://api.github.com/repos/${{ inputs.workflow2_github_account }}/${{ inputs.workflow2_repo_github }}/dispatches" \
             -H 'Accept: application/vnd.github.everest-preview+json' \
             -u ${{ secrets.GIT_TOKEN }} \
             --data '{"event_type": "Trigger Workflow", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'
