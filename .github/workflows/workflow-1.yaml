@@ -1,9 +1,10 @@
 name: workflow_01
+
 on:
   workflow_dispatch:
-     inputs:
+    inputs:
       workflow_02:
-        description: 'ًWorkflow 2 which will be triggered'
+        description: 'Workflow 2 which will be triggered'
         required: true
         default: 'workflow_02'
 
@@ -15,18 +16,18 @@ on:
       workflow2_repo_github:
         description: 'repo-name'
         required: true
-        default: 'repoName' 
+        default: 'repoName'
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      
       - name: Test
         run: |
-            curl -X POST "https://api.github.com/repos/${{ github.event.repository.owner.login }}/${{ github.event.repository.name }}/dispatches" \
-          -H 'Accept: application/vnd.github.everest-preview+json' \
-          -u ${{ secrets.GIT_TOKEN }} \
-          --data '{"event_type": "Trigger Workflow", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'
-      - uses: actions/checkout@v3
+          curl -X POST "https://api.github.com/repos/${{ github.event.repository.owner.login }}/${{ github.event.repository.name }}/dispatches" \
+            -H 'Accept: application/vnd.github.everest-preview+json' \
+            -u ${{ secrets.GIT_TOKEN }} \
+            --data '{"event_type": "Trigger Workflow", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'
+      - name: Checkout Code
+        uses: actions/checkout@v2  # You can specify a more recent version here if needed
